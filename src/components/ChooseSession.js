@@ -1,7 +1,20 @@
+import axios from 'axios';
 import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 export default function ChooseSession() {
+    const { idFilme } = useParams()
+
+    const [items, setItems] = useState({})
+    useEffect(()=> {
+        const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${idFilme}/showtimes`)
+        promise.then((response)=> {
+            setItems(response.data)
+        })
+    }, [])
+
     return (
         <Container>
             <Header>
@@ -34,9 +47,9 @@ export default function ChooseSession() {
 
             <Footer>
                 <div className="rectangle">
-                    <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/tnAuB8q5vv7Ax9UAEje5Xi4BXik.jpg"/>
+                    <img src={items.posterURL}/>
                 </div>
-                <h1>Enola Holmes</h1>
+                <h1>{items.title}</h1>
             </Footer>
 
         </Container>

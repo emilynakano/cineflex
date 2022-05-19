@@ -23,7 +23,7 @@ export default function ChooseMovie () {
             <h1>Selecione o filme</h1>
             <Main>
                 {items.map((item)=>
-                    <Link to="/session">
+                    <Link to={`/sessoes/${item.id}`}>
                         <img src={item.posterURL} />
                     </Link>
                 )}
