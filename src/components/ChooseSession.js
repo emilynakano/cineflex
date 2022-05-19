@@ -22,26 +22,17 @@ export default function ChooseSession() {
             </Header>
             <h1>Selecione o horário</h1>
             <Main>
-                <h1>Quinta-feira - 24/06/2021</h1>
+                {items.days.map((day)=> 
+                <>
+                <h1>{day.weekday} - {day.date}</h1>
                 <Buttons>
+                    {day.showtimes.map((time)=>
                     <button>
-                        <h1>15:00</h1>
-                    </button>
-                    <button>
-                        <h1>15:00</h1>
-                    </button>
+                        <h1>{time.name}</h1>
+                    </button>)}
                     
                 </Buttons>
-                <h1>Quinta-feira - 24/06/2021</h1>
-                <Buttons>
-                    <button>
-                        <h1>15:00</h1>
-                    </button>
-                    <button>
-                        <h1>15:00</h1>
-                    </button>
-                    
-                </Buttons>
+                </>)}
                 
             </Main>
 
@@ -86,6 +77,7 @@ const Main = styled.main`
     display: flex;
     flex-direction: column;
     padding: 0 25px;
+    margin-bottom: 120px;
     h1{
     height: 60px;
     font-size: 20px;
