@@ -1,7 +1,21 @@
 import React from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 export default function ChooseSeat () {
+    const { idSessao } = useParams()
+    const[session, setSession] = useState({})
+
+    useEffect(()=> {
+        const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSessao}/seats`)
+        promise.then((response)=> setSession(response.data))
+    }, [])
+    if(!session) {
+        return "carregando"
+    }
+
     let assentos = []
     for(let i = 0; i < 50; i ++) {
         assentos.push(i)
@@ -56,7 +70,7 @@ export default function ChooseSeat () {
 
             <Footer>
                 <div className="rectangle">
-                    <img src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/tnAuB8q5vv7Ax9UAEje5Xi4BXik.jpg"/>
+                    <img src={session.movie.posterURL}/>
                 </div>
                 <div className="text">
                     <h1>Enola Holmes</h1>

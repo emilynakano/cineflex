@@ -9,7 +9,7 @@ export default function App() {
             <Routes>
                 <Route path="/" element={<ChooseMovie />} />
                 <Route path="/sessoes/:idFilme" element={<ChooseSession />} />
-                <Route path="/seat" element={<ChooseSeat />} />
+                <Route path="/assentos/:idSessao" element={<ChooseSeat />} />
             </Routes>
         </BrowserRouter>
 

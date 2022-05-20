@@ -3,18 +3,22 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { Link } from "react-router-dom";
+
 
 export default function ChooseSession() {
     const { idFilme } = useParams()
 
-    const [items, setItems] = useState({})
+    const [items, setItems] = useState(false)
     useEffect(()=> {
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${idFilme}/showtimes`)
         promise.then((response)=> {
             setItems(response.data)
         })
     }, [])
-
+    if(!items) {
+        return "carregando"
+    }
     return (
         <Container>
             <Header>
@@ -27,9 +31,13 @@ export default function ChooseSession() {
                 <h1>{day.weekday} - {day.date}</h1>
                 <Buttons>
                     {day.showtimes.map((time)=>
-                    <button>
-                        <h1>{time.name}</h1>
-                    </button>)}
+                    
+                    <Link to={`/assentos/${time.id}`}>
+                        <button>
+                            <h1>{time.name}</h1>
+                        </button>
+                    </Link>
+                    )}
                     
                 </Buttons>
                 </>)}
