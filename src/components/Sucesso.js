@@ -1,10 +1,11 @@
 import React from 'react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 export default function Sucesso() {
+    const location = useLocation()
     return (
         <Container>
             <Header>
@@ -20,28 +21,26 @@ export default function Sucesso() {
                     Filme e sessão
                 </h3>
                 <h1>
-                    Enola Holmes
+                    {location.state.title}
                 </h1>
                 <h1>
-                    24/06/2021 15:00
+                    {location.state.date} 15:00
                 </h1>
                 <h3>
                     Ingressos
                 </h3>
+                {location.state.ids.map((id)=>
                 <h1>
-                    Assento 15
-                </h1>
-                <h1>
-                    Assento 16
-                </h1>
+                    Assento {id}
+                </h1>)}
                 <h3>
                     Comprador
                 </h3>
                 <h1>
-                    Nome: João da Silva Sauro
+                    Nome: {location.state.name}
                 </h1>
                 <h1>
-                    CPF: 123.456.789-10
+                    CPF: {location.state.CPF}
                 </h1>
                 <button>
                     <h1>Voltar pra Home</h1>

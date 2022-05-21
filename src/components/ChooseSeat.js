@@ -10,16 +10,12 @@ export default function ChooseSeat () {
     const { idSessao } = useParams()
     const[seats, setseats] = useState(false)
     let array = []
+    let arrayI = []
 
     useEffect(()=> {
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSessao}/seats`)
         promise.then((response)=> setseats(response.data))
     }, [])
-
-    let assentos = []
-    for(let i = 0; i < 50; i ++) {
-        assentos.push(i)
-    }
     if(!seats) {
         return "carregando"
     }
@@ -30,7 +26,7 @@ export default function ChooseSeat () {
             </Header>
             <h1>Selecione o(s) assento(s)</h1>
             <Choose>
-                {seats.seats.map((seat, index)=><Assentos array={array} seat={seat} index={index}/>)}
+                {seats.seats.map((seat, index)=><Assentos id={seat.id} array={array} arrayI={arrayI} seat={seat} index={index}/>)}
 
                     <Option>
                         <Selecionado>
@@ -55,7 +51,7 @@ export default function ChooseSeat () {
                     </Option>
 
             </Choose>
-                <Forms array={array} />
+                <Forms date={seats.day.date} title={seats.movie.title} array={array} arrayI={arrayI} />
 
 
             <Footer>
@@ -88,8 +84,9 @@ function Assentos(props) {
             setColor('#C3CFD9')
         } if(props.seat.isAvailable && color !== '#8DD7CF') {
             setColor('#8DD7CF')
+            props.array.push(props.id)
+            props.arrayI.push(props.index + 1)
         }
-        props.array.push(1)
     }
 
     return (

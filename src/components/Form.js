@@ -1,18 +1,24 @@
-import React from 'react';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { React, useState } from 'react';
 import styled from 'styled-components';
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Forms(props) {
     const [nome, setNome] = useState("")
     const [CPF, setCPF] = useState("")
-    
+    const navigate = useNavigate();
+
     function finalizar (event) {
         event.preventDefault();
+        const array = props.arrayI;
+        const title = props.title;
+        const date = props.date;
+        navigate('/sucesso', {state:{name:nome,CPF:CPF,ids:array, title:title, date:date}})
+        
+
         const promise = axios.post("https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many", {
-            ids: [1, 2, 3],
+            ids: props.array,
             name: nome,
             cpf: CPF
         })
@@ -37,11 +43,11 @@ export default function Forms(props) {
             </h1>
             <input value={CPF} onChange={e => setCPF(e.target.value)} type="text" placeholder="Digite seu CPF..." required />
 
-           
-                <button>
-                    <h1>Reservar assento(s)</h1>
-                </button>
             
+            <button type="submit">
+                <h1>Reservar assento(s)</h1>
+            </button>
+
         </Form>
     )
 }
