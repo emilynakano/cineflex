@@ -1,11 +1,14 @@
 import React from 'react';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 
 export default function Sucesso() {
     const location = useLocation()
+    const navigate = useNavigate()
+    function Home() {
+        navigate('/')
+    }
     return (
         <Container>
             <Header>
@@ -24,7 +27,7 @@ export default function Sucesso() {
                     {location.state.title}
                 </h1>
                 <h1>
-                    {location.state.date} 15:00
+                    {location.state.date} {location.state.time}
                 </h1>
                 <h3>
                     Ingressos
@@ -42,7 +45,7 @@ export default function Sucesso() {
                 <h1>
                     CPF: {location.state.CPF}
                 </h1>
-                <button>
+                <button onClick={Home}>
                     <h1>Voltar pra Home</h1>
                 </button>
             </Main>

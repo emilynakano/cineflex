@@ -14,7 +14,7 @@ export default function Forms(props) {
         const array = props.arrayI;
         const title = props.title;
         const date = props.date;
-        navigate('/sucesso', {state:{name:nome,CPF:CPF,ids:array, title:title, date:date}})
+        const time = props.time
         
 
         const promise = axios.post("https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many", {
@@ -22,13 +22,7 @@ export default function Forms(props) {
             name: nome,
             cpf: CPF
         })
-        console.log({
-            ids: props.array,
-            name: nome,
-            cpf: CPF
-        })
-        promise.then(() => alert("feu bpoom"))
-        promise.catch(()=> alert("feu ruim"))
+        promise.then(() => navigate('/sucesso', {state:{name:nome,CPF:CPF,ids:array, title:title, date:date, time:time}}))
 
     }
 

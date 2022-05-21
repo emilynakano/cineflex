@@ -51,7 +51,7 @@ export default function ChooseSeat () {
                     </Option>
 
             </Choose>
-                <Forms date={seats.day.date} title={seats.movie.title} array={array} arrayI={arrayI} />
+                <Forms time={seats.name} date={seats.day.date} title={seats.movie.title} array={array} arrayI={arrayI} />
 
 
             <Footer>
