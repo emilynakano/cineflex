@@ -8,7 +8,7 @@ export default function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Sucesso />} />
+                <Route path="/" element={<ChooseMovie />} />
                 <Route path="/sessoes/:idFilme" element={<ChooseSession />} />
                 <Route path="/assentos/:idSessao" element={<ChooseSeat />} />
                 <Route path="/sucesso" element={<Sucesso />} />

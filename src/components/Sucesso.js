@@ -47,7 +47,6 @@ export default function Sucesso() {
                     <h1>Voltar pra Home</h1>
                 </button>
             </Main>
-
             
         </Container>
     )
