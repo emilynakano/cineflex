@@ -3,22 +3,23 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { Link } from "react-router-dom";
 
 export default function ChooseSeat () {
     const { idSessao } = useParams()
-    const[session, setSession] = useState({})
+    const[seats, setseats] = useState(false)
 
     useEffect(()=> {
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSessao}/seats`)
-        promise.then((response)=> setSession(response.data))
+        promise.then((response)=> setseats(response.data))
     }, [])
-    if(!session) {
-        return "carregando"
-    }
 
     let assentos = []
     for(let i = 0; i < 50; i ++) {
         assentos.push(i)
+    }
+    if(!seats) {
+        return "carregando"
     }
     return (
         <Container>
@@ -27,60 +28,114 @@ export default function ChooseSeat () {
             </Header>
             <h1>Selecione o(s) assento(s)</h1>
             <Choose>
-                {assentos.map((index)=><Seat> {index + 1} </Seat>)}
+                {seats.seats.map((seat, index)=><Seat onClick={() => alert("clicou")} color={seat.isAvailable}> {index + 1} </Seat>)}
 
                     <Option>
-                        <div className="Seat Selecionado">
-                        </div>
+                        <Selecionado>
+                        </Selecionado>
                         <h2>
                             Selecionado 
                         </h2>
                     </Option>
                     <Option>
-                        <div className="Seat Disponível">
-                        </div>
+                        <Disponivel>
+                        </Disponivel>
                         <h2>
                             Disponível 
                         </h2>
                     </Option>
                     <Option>
-                        <div className="Seat Indisponível">
-                        </div>
+                        <Indisponivel>
+                        </Indisponivel>
                         <h2>
                             Indisponível 
                         </h2>
                     </Option>
 
             </Choose>
-                <div className="forms">
-                    <h1>
-                    Nome do comprador:
-                    </h1>
-                    <input type="text" placeholder="Digite seu nome..." />
-                    <h1>
-                    CPF do comprador:
-                    </h1>
-                    <input type="text" placeholder="Digite seu CPF..." />
-
-                    <button>
-                    <h1>Reservar assento(s)</h1>
-                    </button>
-                </div>
+                <Forms />
 
 
             <Footer>
                 <div className="rectangle">
-                    <img src={session.movie.posterURL}/>
+                    <img src={seats.movie.posterURL}/>
                 </div>
                 <div className="text">
-                    <h1>Enola Holmes</h1>
-                    <h1>Quinta-feira - 15:00</h1>
+                    <h1>{seats.movie.title}</h1>
+                    <h1>{seats.day.weekday} - {seats.name}</h1>
                 </div>
             </Footer>
         </Container>
     )
     
 }
+function Forms() {
+    const [nome, setNome] = useState("")
+    const [CPF, setCPF] = useState("")
+    
+    function finalizar (event) {
+        event.preventDefault();
+        const promise = axios.post("https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many", {
+            ids: [1, 2, 3],
+            name: nome,
+            cpf: CPF
+        })
+        promise.then(() => {
+        })
+
+    }
+
+    return (
+        <Form onSubmit={finalizar}>
+            <h1>
+            Nome do comprador:
+            </h1>
+            <input value={nome} onChange={e => setNome(e.target.value)} type="text" placeholder="Digite seu nome..." required />
+            <h1>
+            CPF do comprador:
+            </h1>
+            <input value={CPF} onChange={e => setCPF(e.target.value)} type="text" placeholder="Digite seu CPF..." required />
+
+            <button type="submit">
+            <h1>Reservar assento(s)</h1>
+            </button>
+        </Form>
+    )
+}
+const Form = styled.form`
+    display:flex;
+    flex-direction:column;
+    align-items:start;
+    margin: 0 auto;
+    margin-bottom: 120px;
+    margin-top:35px ;
+    margin-left: 10px;
+    margin-right:20px;
+    h1 {
+    justify-content: flex-start;
+    margin-bottom: 5px;
+    }
+    input {
+    height: 51px;
+    width: 100%;
+    margin-bottom: 10px;
+    }
+    button {
+        margin: 22px auto;
+        background-color: #E8833A;
+        border-radius: 3px;
+        border: #E8833A;
+        width: 225px;
+        height: 43px;
+        h1 {
+            font-size: 18px;
+            height: 43px;
+            width: 225px;
+            margin: 0 10px;
+            color: #FFFFFF;
+        }   
+    }
+`;
 const Container = styled.div`
 h1 {
     display: flex;
@@ -120,7 +175,13 @@ const Seat = styled.div`
     margin-bottom: 7px;
     width: 26px;
     height: 26px;
-    background: #C3CFD9;
+    background-color: ${props =>{ if(props.color) {
+        return '#C3CFD9'
+    } else if(!props.color) {
+        return'#FBE192'
+    } else {
+        return 'red'
+    } }};
     border: 1px solid #808F9D;
     border-radius: 12px;
     display: flex;
@@ -137,20 +198,22 @@ const Option = styled.div`
         font-size: 20px;
     }
     
-    .Selecionado {
-        margin-right: 5px;
-        margin-bottom: 7px;
-        width: 26px;
-        height: 26px;
-        background: #C3CFD9;
-        border: 1px solid #808F9D;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #8DD7CF;
-    }
-    .Indisponível {
+`;
+const Selecionado = styled.div`
+    margin-right: 5px;
+    margin-bottom: 7px;
+    width: 26px;
+    height: 26px;
+    background: #C3CFD9;
+    border: 1px solid #808F9D;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #8DD7CF;
+`
+const Indisponivel = styled.div`
+    
         margin-right: 5px;
         margin-bottom: 7px;
         width: 26px;
@@ -162,8 +225,8 @@ const Option = styled.div`
         align-items: center;
         justify-content: center;
         background-color: #FBE192;
-    }
-    .Disponível {
+`
+const Disponivel = styled.div`
         margin-right: 5px;
         margin-bottom: 7px;
         width: 26px;
@@ -175,8 +238,8 @@ const Option = styled.div`
         align-items: center;
         justify-content: center;
         background-color: #C3CFD9;
-    }
-`;
+
+`
 
 
 const Footer = styled.div`
