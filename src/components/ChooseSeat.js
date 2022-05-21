@@ -81,7 +81,12 @@ function Assentos(props) {
     const [color, setColor] = useState(aleluia)
 
     function clicar() {
-        if(props.seat.isAvailable && color !== '#8DD7CF') {
+        if(!props.seat.isAvailable) {
+            alert("Esse assento não está disponível")
+        }
+        if(color === '#8DD7CF') {
+            setColor('#C3CFD9')
+        } if(props.seat.isAvailable && color !== '#8DD7CF') {
             setColor('#8DD7CF')
         }
         props.array.push(1)
