@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import axios from 'axios';
 
 export default function ChooseMovie () {
@@ -35,6 +35,7 @@ export default function ChooseMovie () {
     )
 }
 const Container = styled.div`
+    
 	h1 {
 		display: flex;
         flex-direction: row;

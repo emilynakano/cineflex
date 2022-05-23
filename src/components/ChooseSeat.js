@@ -1,9 +1,7 @@
-import React from 'react';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Link } from "react-router-dom";
 import Forms from './Form';
 
 export default function ChooseSeat () {
@@ -68,13 +66,13 @@ export default function ChooseSeat () {
     
 }
 function Assentos(props) { 
-    let aleluia = ""
+    let cor = ""
     if(props.seat.isAvailable) {
-        aleluia = '#C3CFD9';
+        cor = '#C3CFD9';
     } else {
-        aleluia = '#FBE192'
+        cor = '#FBE192'
     }
-    const [color, setColor] = useState(aleluia)
+    const [color, setColor] = useState(cor)
 
     function clicar() {
         if(!props.seat.isAvailable) {
